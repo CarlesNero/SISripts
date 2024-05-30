@@ -80,6 +80,9 @@ do
     fi
 done < "$archivo"
 
+
+
+
 7. Script que determina si se ha ingresado una letra mayúscula, una letra minúscula o un número
 
 read -p "Ingrese un carácter: " char
