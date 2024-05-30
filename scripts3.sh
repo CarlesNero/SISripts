@@ -51,16 +51,15 @@ Luego, el script:
 
 archivo="archivo.txt"
 
-while IFS=: read -r col1 col2
-do
-    if [ "$col2" == "pepe" ]; then
-        echo "La segunda columna contiene 'pepe': $col1:$col2"
-    fi
-done < "$archivo"
+cut -d' ' -f2 pepe.txt> a.txt
+if grep -q pepe a.txt;then
+echo "pepe existe en la 2 columna"
+else echo "pepe no existe"
+fi
 
 5. Script que obtiene las líneas del archivo /etc/passwd que empiezan con 'r'
 
-grep '^r' /etc/passwd
+grep ^r /etc/passwd
 
 6. Script para obtener personas que vienen de Rusia
 Primero, crea el archivo personas.txt con contenido de ejemplo:
