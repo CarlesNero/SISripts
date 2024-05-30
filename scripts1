@@ -1,0 +1,613 @@
+Ejercicios Scripting 
+
+ 
+
+1. Variables 
+
+Crear un script llamado “variables.sh” que contenga las siguientes variables con estos valores: 
+
+- valor1=10 
+
+- valor2=20 
+
+Mostrar los valores de las variables por pantalla. 
+
+  
+
+valor1=10 
+
+valor2=20 
+
+ 
+
+echo "El valor de valor1 es: $valor1" 
+
+echo "El valor de valor2 es: $valor2" 
+
+  
+
+ 
+
+ 
+
+2. 2. Parámetros 
+
+a. Leer por parámetros el nombre y apellidos.  
+
+Mostrarlos por pantalla (nombre.sh) 
+
+echo "Por favor, ingresa tu nombre:" 
+
+read nombre 
+
+echo "Por favor, ingresa tus apellidos:" 
+
+read apellidos 
+
+echo "Nombre completo: $nombre $apellidos" 
+
+ 
+
+ 
+
+b. Leer por parámetros 2 valores, y mostrar su suma. (suma.sh) 
+
+echo "Por favor, ingresa el primer valor:" 
+
+read valor1 
+
+echo "Por favor, ingresa el segundo valor:" 
+
+read valor2 
+
+suma=$(($valor1 + $valor2)) 
+
+echo "La suma de $valor1 y $valor2 es: $suma" 
+
+ 
+
+ 
+
+ 
+
+ 
+
+3. E/S por consola 
+
+Crear un script que lea por teclado tres valores y muestre su suma y multiplicación(operaciones.sh)  
+
+echo "Por favor, ingresa el primer valor:"  
+
+read valor1  
+
+echo "Por favor, ingresa el segundo valor:"  
+
+read valor2 
+
+echo "Por favor, ingresa el tercer valor:"  
+
+read valor3  
+
+suma=$((valor1 + valor2 + valor3))  
+
+multiplicacion=$((valor1 * valor2 * valor3))  
+
+echo "La suma de $valor1, $valor2 y $valor3 es: $suma"  
+
+echo "La multiplicación de $valor1, $valor2 y $valor3 es: $multiplicacion" 
+
+ 
+
+ 
+
+4. Redirección de la E/S 
+
+a. Crear un script (leeretc.sh) que lea el contenido del directorio /etc y lo guarde en elfichero contenidoetc.txt.                          
+
+ls /etc > "contenidoetc.txt" 
+
+echo "El contenido del directorio /etc se ha guardado en contenidoetc.txt" 
+
+ 
+
+b. Crear un script (showfile.sh) que muestre por pantalla el contenido del fichero/etc/passwd y /etc/shadow. 
+
+echo "Contenido del archivo /etc/passwd:"  
+
+cat /etc/passwd  
+
+echo "-------------------------------------"  
+
+echo "Contenido del archivo /etc/shadow:"  
+
+cat /etc/shadow 
+
+ 
+
+ 
+
+ 
+
+ 
+
+5. Filtrado de textos: grep 
+
+a. Crear un script (usuario.sh) que muestre las líneas del fichero /etc/passwd quecontienen vuestro nombre de usuario. 
+
+usuario=$(whoami)  
+
+ echo "Líneas en /etc/passwd con el nombre de usuario '$usuario':" 
+
+ grep "$usuario" /etc/passwd 
+
+ 
+
+b. Crear un script (usuario2.sh) que muestre las líneas del fichero /etc/passwd quecontienen el nombre de usuario introducido por teclado. 
+
+echo "Introduce el nombre de usuario:" 
+
+read nombre_usuario  
+
+echo "Líneas en /etc/passwd con el nombre de usuario '$nombre_usuario':" 
+
+grep "$nombre_usuario" /etc/passwd 
+
+ 
+
+ 
+
+ 
+
+6. Filtrado de textos: head/tail 
+
+a. Crear un script (startfile.sh) que muestre las primeras 3 líneas del fichero /etc/group 
+
+echo "Primeras 3 líneas del archivo /etc/group:" 
+
+head -n 3 /etc/group 
+
+ 
+
+ 
+
+b. Crear un script (endfile.sh) que muestre las últimas 3 líneas del fichero /etc/group 
+
+echo "Últimas 3 líneas del archivo /etc/group:" 
+
+ tail -n 3 /etc/group 
+
+ 
+
+c. Crear un script (startfile2.sh) que muestre las primeras x líneas del fichero /etc/group,siendo x un valor que hemos introducido por teclado. 
+
+echo "Introduce el número de líneas a mostrar:"  
+
+read numero_lineas 
+
+echo "Primeras $numero_lineas líneas del archivo /etc/group:"  
+
+head -n "$numero_lineas" /etc/group 
+
+ 
+
+ 
+
+7. Filtrado de textos: cut/sort 
+
+a. Crear un script (sortusers.sh) que muestre todos los usuarios del sistema, ordenadosalfabéticamente (de menor a mayor). 
+
+echo "Usuarios del sistema ordenados alfabéticamente:"  
+
+cut -d: -f1 /etc/passwd | sort 
+
+ 
+
+ 
+
+ 
+
+b. Crear un script (sortgroups.sh) que muestre todos los grupos del sistema, ordenadosalfabéticamente (de mayor a menor). 
+
+echo "Grupos del sistema ordenados alfabéticamente (de mayor a menor):"  
+
+cut -d: -f1 /etc/group | sort –r 
+
+                
+
+ 
+
+Operaciones aritmeticológicas / Estructuras de Control Funciones / Backup 
+
+ 
+
+ 8. Operaciones aritmeticológicas. 
+
+Crear una sencilla calculadora (calc.sh) que permita realizar la suma, resta o división, de dos operandos dados por teclado.  La operación a realizar debe ser introducida como parámetro.   
+
+echo "Introduce la operación a realizar: suma, resta, división" 
+
+read operacion 
+
+  
+
+echo "Introduce un valor" 
+
+read operando1 
+
+  
+
+echo "Introduce otro valor" 
+
+read operando2 
+
+  
+
+case $operacion in 
+
+    suma) 
+
+        resultado=$(($operando1 + $operando2)) 
+
+        echo "El resultado de la suma es: $resultado" 
+
+        ;; 
+
+    resta) 
+
+        resultado=$(($operando1 - $operando2)) 
+
+        echo "El resultado de la resta es: $resultado" 
+
+        ;; 
+
+    división) 
+
+        if [ $operando2 -eq 0 ]; then 
+
+            echo "No se puede dividir por cero." 
+
+            exit 1 
+
+        fi 
+
+        resultado=$(awk "BEGIN {printf \"%.2f\", $operando1 / $operando2}") 
+
+        echo "El resultado de la división es: $resultado" 
+
+        ;; 
+
+    *) 
+
+        echo "Operación no válida. Por favor, introduce 'suma', 'resta' o 'divis> 
+
+        exit 1 
+
+        ;; 
+
+esac 
+
+ 
+
+9. Estructuras de control – (if) 
+
+a. Crear un script (comptextos.sh) que compare de dos cadenas de textoalfanuméricas introducidas por teclado. Deberá mostrar un mensaje de si soniguales o diferentes. 
+
+echo "Introduce la primera cadena de texto:" 
+
+read texto1  
+
+echo "Introduce la segunda cadena de texto:" 
+
+read texto2  
+
+if [ "$texto1" = "$texto2" ]; then 
+
+    echo "Las cadenas de texto son iguales." 
+
+else 
+
+    echo "Las cadenas de texto son diferentes." 
+
+fi 
+
+ 
+
+b. Crear un script (compnums.sh) que compare de dos números introducidos porteclado. Deberá mostrar un mensaje de si son iguales o diferentes. 
+
+echo "Introduce el primer número:" 
+
+read num1 
+
+echo "Introduce el segundo número:" 
+
+read num2 
+
+if [ "$num1" -eq "$num2" ]; then 
+
+    echo "Los números son iguales." 
+
+else 
+
+    echo "Los números son diferentes." 
+
+fi 
+
+ 
+
+ 
+
+10. Estructuras de control – (case) 
+
+a. Crear un script (nettools.sh) que muestre un menú con diferentesherramientas de monitorización (top, ps, df y who) y ejecute la herramientaseleccionada. 
+
+mostrar_menu() { 
+
+    echo "Seleccione una herramienta de monitorización:" 
+
+    echo "1. top" 
+
+    echo "2. ps" 
+
+    echo "3. df" 
+
+    echo "4. who" 
+
+    echo "5. Salir" 
+
+} 
+
+  
+
+ejecutar_herramienta() { 
+
+    case $opcion in 
+
+        1) 
+
+            top 
+
+            ;; 
+
+        2) 
+
+            ps aux 
+
+            ;; 
+
+        3) 
+
+            df -h 
+
+            ;; 
+
+        4) 
+
+            who 
+
+            ;; 
+
+        5) 
+
+            echo "Saliendo del programa." 
+
+            exit 0 
+
+            ;; 
+
+        *) 
+
+            echo "Opción no válida." 
+
+            ;; 
+
+    esac 
+
+} 
+
+  
+
+while true; do 
+
+    mostrar_menu 
+
+    read -p "Ingrese el número de la herramienta a ejecutar (1-5): " opcion 
+
+  
+
+    if ! [[ "$opcion" =~ ^[1-5]$ ]]; then 
+
+        echo "Por favor, ingrese un número válido (1-5)." 
+
+        continue 
+
+    fi 
+
+  
+
+    ejecutar_herramienta $opcion 
+
+done 
+
+ 
+
+ 
+
+11. Estructuras de control – (for) 
+
+Crear un script (dominios.sh) que liste la información DNS de dos dominios introducidos por teclado. El DNS de un dominio se obtiene mediante “/usr/bin/host dominio”. 
+
+echo "Introduce el primer dominio:" 
+
+read dominio1 
+
+  
+
+echo "Introduce el segundo dominio:" 
+
+read dominio2 
+
+  
+
+info_dominio1=$(/usr/bin/host "$dominio1") 
+
+info_dominio2=$(/usr/bin/host "$dominio2") 
+
+  
+
+echo "Información DNS del dominio $dominio1:" 
+
+echo "$info_dominio1" 
+
+echo "--------------------------------------------" 
+
+echo "Información DNS del dominio $dominio2:" 
+
+echo "$info_dominio2" 
+
+ 
+
+ 
+
+12. Estructuras de control – (while) 
+
+Crear un script que lea datos de teclado hasta que pulsemos un “0”. 
+
+entrada=""  
+
+while [ "$entrada" != "0" ]; do 
+
+    echo "Introduce un dato (ingresa '0' para salir):" 
+
+    read entrada 
+
+done  
+
+echo "Has ingresado '0'. Saliendo del script." 
+
+ 
+
+ 
+
+ 
+
+13. Funciones 
+
+a. Crear un script (funcionescalc.sh) que muestre un menú con las operaciones arealizar: suma, resta, multiplicación y división. Cada una de las opciones llamaráa su función correspondiente. Los dos valores a operar deberán serintroducidos por teclado. 
+
+  
+
+ 
+
+ 
+
+suma() { 
+
+    resultado=$(($1 + $2)) 
+
+    echo "El resultado de la suma es: $resultado" 
+
+} 
+
+  
+
+resta() { 
+
+    resultado=$(($1 - $2)) 
+
+    echo "El resultado de la resta es: $resultado" 
+
+} 
+
+  
+
+multiplicacion() { 
+
+    resultado=$(($1 * $2)) 
+
+    echo "El resultado de la multiplicación es: $resultado" 
+
+} 
+
+  
+
+division() { 
+
+    if [ $2 -eq 0 ]; then 
+
+        echo "No se puede dividir por cero." 
+
+    else 
+
+        resultado=$(awk "BEGIN {printf \"%.2f\", $1 / $2}") 
+
+        echo "El resultado de la división es: $resultado" 
+
+    fi 
+
+} 
+
+  
+
+echo "Seleccione una operación:" 
+
+echo "1. Suma" 
+
+echo "2. Resta" 
+
+echo "3. Multiplicación" 
+
+echo "4. División" 
+
+  
+
+read opcion 
+
+  
+
+echo "Ingrese el primer valor:" 
+
+read valor1 
+
+echo "Ingrese el segundo valor:" 
+
+read valor2 
+
+  
+
+case $opcion in 
+
+    1) 
+
+        suma $valor1 $valor2 
+
+        ;; 
+
+    2) 
+
+        resta $valor1 $valor2 
+
+        ;; 
+
+    3) 
+
+        multiplicacion $valor1 $valor2 
+
+        ;; 
+
+    4) 
+
+        division $valor1 $valor2 
+
+        ;; 
+
+    *) 
+
+ 
+
+ 
+
+ 
+
+14. Copia de seguridad 
+
+a. Crear un script que realice el backup completo del directorio /home en unarchivo comprimido. El nombre del archivo se deberá contener la fecha en lacual se realiza y el destino de la copia será /backups.Programar el backup para que se ejecute todos los días a la 1 de la mañana 
